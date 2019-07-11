@@ -1,0 +1,7 @@
+compiler:
+  - clang
+  - gcc
+
+script:
+  - make
+  - make clean
