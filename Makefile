@@ -1,10 +1,10 @@
 all: client server
 
 client: client.cc
-	@g++ client.cc -o client
+	@g++ -O3 client.cc -o client
 
 server: server.cc
-	@g++ server.cc -o server
+	@g++ -O3 server.cc -o server
 
 clean:
 	@rm -f server client
