@@ -31,9 +31,8 @@ int main() {
 
   std::cout << "Waiting for response.." << std::endl;
   int len;
-  std::string buffer;
-  buffer.reserve(1024);
-  int n = recvfrom(sockfd, (char *)buffer.data(), 1024, MSG_WAITALL,
+  char buffer[1024];
+  int n = recvfrom(sockfd, buffer, 1024, MSG_WAITALL,
                    (struct sockaddr *)&servaddr, (socklen_t *)&len);
   buffer[n] = 0;
   std::cout << "Server responded: " << buffer << std::endl;
