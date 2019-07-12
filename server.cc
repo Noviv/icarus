@@ -7,10 +7,32 @@
 #include <arpa/inet.h>
 #include <netinet/in.h>
 #include <iostream>
-
+#include <thread>
 #define PORT 8080
 
 #define MAXLINE 1024
+#define RECVBYTES 100
+
+
+
+void udp_handler(int fdtn)
+{
+
+	char  buffer[RECVBYTES];
+	struct sockaddr_in cliaddr;
+	int len;
+	memset(&cliaddr, 0, sizeof(cliaddr));
+	while(true)
+	{
+
+		int bytes_recv = recvfrom(fdtn, (char*)buffer, RECVBYTES, MSG_WAITALL,
+						(struct sockaddr*)&cliaddr, (socklen_t*)&len);
+		buffer[bytes_recv] = '\0';
+		printf("string recv: %s\n", buffer);
+
+	}
+}
+
 
 int main()
 {
@@ -38,27 +60,30 @@ int main()
 
 	int len, n;
 	char str[] = "hello";
-	while(true)
+	std::cout<<"now I'm recv" << std::endl;
+
+	int str_check = 1;
+	while(str_check != 0)
 	{
-		std::cout<<"now I'm recv" << std::endl;
 		n = recvfrom(sockfd, (char*)buffer, MAXLINE, MSG_WAITALL,
-			(struct sockaddr *) &cliaddr, (socklen_t*)&len);
+		(struct sockaddr *) &cliaddr, (socklen_t*)&len);
 		buffer[n] = '\0';
 		printf("client : %s\n", buffer);
-		int cv = memcmp(buffer, str, sizeof(str));
-		std::cout << cv << std::endl;
-		
-		if(cv == 0)
+		str_check  = memcmp(buffer, str, sizeof(str));
+		std::cout << str_check << std::endl;
+		if(str_check == 0)
 		{
 
 			sendto(sockfd, (const char *)hello, strlen(hello),
 					MSG_CONFIRM, (const struct sockaddr *)&cliaddr,
-					len);
-		
-
-			std::cout << "i sent" << std::endl;
+						len);
+			std::cout << "i sent" << std::endl;	
 		}
 	}
+	std::cout << "making a thread" << std::endl;
+	std::thread t1(udp_handler, sockfd);
+	t1.join();
+
 	return 0;
 
 }
