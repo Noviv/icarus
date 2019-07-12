@@ -34,3 +34,4 @@
 # icarus files
 client
 server
+*.swp

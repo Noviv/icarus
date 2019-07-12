@@ -8,6 +8,8 @@
 #include <vector>
 #include <cstring>
 
+constexpr auto PORT = 8080;
+
 int main() {
   int sockfd = socket(AF_INET, SOCK_DGRAM, 0);
   if (sockfd < 0) {
@@ -19,7 +21,7 @@ int main() {
   memset(&servaddr, 0, sizeof(servaddr));
 
   servaddr.sin_family = AF_INET;
-  servaddr.sin_port = htons(8080);
+  servaddr.sin_port = htons(PORT);
   servaddr.sin_addr.s_addr = INADDR_ANY; // inet_addr("127.0.0.1");
 
   std::cout << "Sending greeting..." << std::endl;
