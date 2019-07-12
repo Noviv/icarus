@@ -7,10 +7,12 @@
 #include <sys/types.h>
 #include <unistd.h>
 
+#include <iostream>
+
 int main() {
   int sockfd = socket(AF_INET, SOCK_DGRAM, 0);
   if (sockfd < 0) {
-    printf("Socket creation failure!\n");
+    std::cerr << "Socket creation failed!" << std::endl;
     return 1;
   }
 
@@ -21,19 +23,20 @@ int main() {
   servaddr.sin_port = htons(8080);
   servaddr.sin_addr.s_addr = INADDR_ANY; // inet_addr("127.0.0.1");
 
-  printf("Sending greeting...\n");
-  const char *hello = "hello";
-  sendto(sockfd, hello, strlen(hello), MSG_CONFIRM,
+  std::cout << "Sending greeting..." << std::endl;
+  const std::string hello = "hello";
+  sendto(sockfd, hello.c_str(), hello.size(), MSG_CONFIRM,
          (const struct sockaddr *)&servaddr, sizeof(servaddr));
-  printf("Greeted server!\n");
+  std::cout << "Greeted server!" << std::endl;
 
-  printf("Waiting for response...\n");
+  std::cout << "Waiting for response.." << std::endl;
   int len;
-  char buffer[1024];
-  int n = recvfrom(sockfd, (char *)buffer, 1024, MSG_WAITALL,
+  std::string buffer;
+  buffer.reserve(1024);
+  int n = recvfrom(sockfd, (char *)buffer.data(), 1024, MSG_WAITALL,
                    (struct sockaddr *)&servaddr, (socklen_t *)&len);
   buffer[n] = 0;
-  printf("Server responded: %s\n", buffer);
+  std::cout << "Server responded: " << buffer << std::endl;
 
   close(sockfd);
   return 0;
