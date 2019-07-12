@@ -9,7 +9,7 @@
 #include <iostream>
 
 #define PORT 8080
-#define MAXLINE 1024
+#define MAXLINE 1050
 
 int main()
 {
