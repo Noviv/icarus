@@ -1,13 +1,12 @@
 #include <arpa/inet.h>
 #include <netinet/in.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 #include <sys/socket.h>
 #include <sys/types.h>
 #include <unistd.h>
 
 #include <iostream>
+#include <vector>
+#include <cstring>
 
 int main() {
   int sockfd = socket(AF_INET, SOCK_DGRAM, 0);
@@ -30,12 +29,13 @@ int main() {
   std::cout << "Greeted server!" << std::endl;
 
   std::cout << "Waiting for response.." << std::endl;
-  int len;
-  char buffer[1024];
-  int n = recvfrom(sockfd, buffer, 1024, MSG_WAITALL,
-                   (struct sockaddr *)&servaddr, (socklen_t *)&len);
+  std::vector<char> buffer(1024);
+  int n = recvfrom(sockfd, &buffer[0], buffer.size(), MSG_WAITALL,
+                   nullptr, nullptr);
   buffer[n] = 0;
-  std::cout << "Server responded: " << buffer << std::endl;
+
+  std::string response(buffer.begin(), buffer.begin() + n);
+  std::cout << "Server responded: " << std::move(response) << std::endl;
 
   close(sockfd);
   return 0;
