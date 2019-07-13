@@ -9,8 +9,10 @@
 #include <cstring>
 #include <array>
 
-constexpr auto PORT = 8080;
-constexpr auto IP = "34.83.142.125";
+#include "parse.h"
+
+constexpr int PORT = 8080;
+static std::string IP = "34.83.142.125";
 
 // flags
 static bool DEBUG = false;
@@ -26,12 +28,18 @@ struct Coordinate {
 
 // parse CLI options
 // true == error
-void parse_opts(int argc, char* argv[]) {
+bool parse_opts(int argc, char* argv[]) {
   for (int i = 0; i < argc; i++) {
     if (std::string(argv[i]).compare("--debug") == 0) {
       DEBUG = true;
+    } else if (std::string(argv[i]).compare("--ip") == 0) {
+      if (i + 2 < argc) {
+        return true;
+      }
+      IP = std::string(argv[i + 1]);
     }
   }
+  return false;
 }
 
 // initialize network configuration // true == error
@@ -46,14 +54,14 @@ bool init_network() {
 
   servaddr.sin_family = AF_INET;
   servaddr.sin_port = htons(PORT);
-  servaddr.sin_addr.s_addr = inet_addr(IP);
+  servaddr.sin_addr.s_addr = inet_addr(IP.c_str());
   return false;
 }
 
 // send greeting to server
 std::array<Coordinate, 4> greet() {
   std::cout << "Sending greeting..." << std::endl;
-  const std::string hello = "1";
+  const std::string hello = "hello";
   sendto(sockfd, hello.c_str(), hello.size(), MSG_CONFIRM,
          (const struct sockaddr *)&servaddr, sizeof(servaddr));
   std::cout << "Greeted server!" << std::endl;
@@ -71,8 +79,7 @@ std::array<Coordinate, 4> greet() {
 }
 
 int main(int argc, char* argv[]) {
-  parse_opts(argc, argv);
-  if (init_network()) {
+  if (parse_opts(argc, argv) || init_network()) {
     return 1;
   }
 
