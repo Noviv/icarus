@@ -1,7 +1,9 @@
-compiler:
-  - clang
-  - gcc
+language: cpp
+
+notifications:
+  email: false
 
 script:
+  - mkdir build && cd build
+  - cmake ..
   - make
-  - make clean
