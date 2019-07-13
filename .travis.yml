@@ -12,4 +12,4 @@ install:
 script:
   - mkdir build && cd build
   - cmake ..
-  - make
+  - make -j${nproc}
