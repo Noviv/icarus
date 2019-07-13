@@ -5,6 +5,10 @@ notifications:
     on_success: never
     on_failure: always
 
+install:
+  - sudo apt update
+  - sudo apt install libgles2-mesa-dev libxt-dev libxaw7-dev
+
 script:
   - mkdir build && cd build
   - cmake ..
