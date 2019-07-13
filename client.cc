@@ -9,6 +9,7 @@
 #include <cstring>
 
 constexpr auto PORT = 8080;
+constexpr auto IP = "34.83.142.125";
 
 int main() {
   int sockfd = socket(AF_INET, SOCK_DGRAM, 0);
@@ -22,7 +23,7 @@ int main() {
 
   servaddr.sin_family = AF_INET;
   servaddr.sin_port = htons(PORT);
-  servaddr.sin_addr.s_addr = INADDR_ANY; // inet_addr("127.0.0.1");
+  servaddr.sin_addr.s_addr = inet_addr(IP);
 
   std::cout << "Sending greeting..." << std::endl;
   const std::string hello = "hello";
