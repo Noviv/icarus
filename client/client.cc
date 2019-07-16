@@ -59,7 +59,7 @@ bool init_network() {
 // send greeting to server
 std::array<Coordinate, 4> greet() {
   std::cout << "Sending greeting..." << std::endl;
-  const std::string hello = "hello";
+  const std::string hello = "1";
   sendto(sockfd, hello.c_str(), hello.size(), MSG_CONFIRM,
          (const struct sockaddr *)&servaddr, sizeof(servaddr));
   std::cout << "Greeted server!" << std::endl;
