@@ -11,13 +11,20 @@
 #include <unistd.h>
 #include <unordered_set>
 #include <arpa/inet.h>
+#include <chrono>
+#include <ctime>
+
 
 #define PORT 8080
 #define MAXLINE 1024
 
 
 std::unordered_set<std::string> user_cache;
-const char* coordinates = "1,1,1,1";
+const char* coordinates = "-1,-1,-1,1,1,1,1,-1";
+bool calc_time = false;
+auto start_time = std::chrono::system_clock::now();
+auto end_time = std::chrono::system_clock::now();
+std::chrono::duration<double> duration;
 
 void udp_handler(int fdtn)
 {
@@ -42,6 +49,20 @@ void udp_handler(int fdtn)
 					(const struct sockaddr*)&cliaddr,len);
 			std::cout << "sending coordinates" << std::endl;
 		}
+		
+		end_time = std::chrono::system_clock::now();
+		duration = end_time - start_time;
+		std::cout << "duration count: " <<  duration.count() << std::endl;
+		std::cout << "end count: " <<  std::chrono::seconds(20).count() << std::endl;
+		if(duration  > std::chrono::seconds(20))
+		{
+			std::cout << "time to reset" << std::endl;
+			start_time = std::chrono::system_clock::now();
+			calc_time = false;
+			user_cache.clear();
+			continue;
+		}
+		
 		if(buffer[0] == '1')
 		{
 			ipstring = inet_ntoa(cliaddr.sin_addr);
@@ -52,6 +73,13 @@ void udp_handler(int fdtn)
 				std::cout << "added user !" << std::endl;
 				user_cache.insert(cache_str);
 			}
+			if(calc_time = false)
+			{
+				calc_time = true;
+				start_time = std::chrono::system_clock::now();
+				std::cout << "time to start counting" << std::endl;
+			}
+
 		}
 		
 		buffer[bytes_recv] = '\0';
