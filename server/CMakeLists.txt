@@ -1,3 +1,7 @@
+project(server)
+
+cmake_minimum_required(VERSION 3.5)
+
 find_package(Threads)
 
 add_executable(server server.cc)
