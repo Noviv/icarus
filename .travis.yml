@@ -1,10 +1,5 @@
 language: cpp
 
-install:
-  - sudo apt update
-  - sudo apt install libgles2-mesa-dev libxt-dev libxaw7-dev libxrandr-dev
-
 script:
-  - mkdir build && cd build
-  - cmake ..
+  - cmake .
   - make -j${nproc}
