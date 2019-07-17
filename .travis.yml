@@ -1,9 +1,21 @@
 language: cpp
 
+addons:
+  apt:
+    sources:
+      - ubuntu-toolchain-r-test
+    packages:
+      - gcc-6
+      - g++-6
+
 install:	
   - sudo apt update	
   - sudo apt install libgles2-mesa-dev libxt-dev libxaw7-dev libxrandr-dev
- 
+
+before_script:
+  - ln -s /usr/bin/gcc-6 /usr/local/bin/gcc
+  - ln -s /usr/bin/g++-6 /usr/local/bin/g++
+
 script:
   - cmake .
   - make -j${nproc}
