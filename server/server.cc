@@ -54,12 +54,12 @@ void udp_handler(int fdtn)
 		if(buffer[0] == '1')
 		{
 			ipstring = inet_ntoa(cliaddr.sin_addr);
-			printf("ip address is %s\n", ipstring);
+			printf("udp_server thread: ip address is %s\n", ipstring);
 			std::string cache_str(ipstring);
 			if(user_cache.find(cache_str) == user_cache.end())
 			{
 				std::lock_guard<std::mutex> guard(cache_mutex);
-				std::cout << "added user !" << std::endl;
+				std::cout << " udp_server thread: added user !" << std::endl;
 				user_cache.insert(cache_str);
 			}
 			/*
@@ -75,7 +75,7 @@ void udp_handler(int fdtn)
 		}
 		
 		buffer[bytes_recv] = '\0';
-		printf("string recv: %s\n", buffer);
+		printf("udp_server thread: string recv: %s\n", buffer);
 
 	}
 }
@@ -90,13 +90,18 @@ void time_handler()
 	{
 		end_time = std::chrono::system_clock::now();
 		duration = end_time - start_time;
-		std::cout << "duration cout: " << duration.count() << std::endl;
-		std::cout << "end_time: " << std::chrono::seconds(20).count() << std::endl;
-
+		/*
+		if(end_time % std::chrono::seconds(1) == 0)
+		{
+			
+			std::cout << "duration cout: " << duration.count() << std::endl;
+			std::cout << "end_time: " << std::chrono::seconds(20).count() << std::endl;
+		}
+		*/
 		if(duration > std::chrono::seconds(20))
 		{
 			std::lock_guard<std::mutex> guard(cache_mutex);
-			std::cout << "time to reset " << std::endl;
+			std::cout << "time thread : time to reset " << std::endl;
 			start_time = std::chrono::system_clock::now();
 			//calc_time = false;
 			user_cache.clear();
@@ -136,7 +141,9 @@ int main()
 
 	std::cout << "making a thread" << std::endl;
 	std::thread t1(udp_handler, sockfd);
+	std::thread t2(time_handler);
 	t1.join();
+	t2.join();
 
 	return 0;
 }
