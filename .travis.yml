@@ -1,7 +1,8 @@
 language: cpp
 
+dist: bionic
+
 install:
-  - sudo add-apt-repository ppa:keithw/glfw3 -y
   - sudo apt update
   - sudo apt install libglfw3 libglfw3-dev
 
