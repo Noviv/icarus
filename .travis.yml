@@ -1,8 +1,7 @@
 language: cpp
 
 install:
-  - echo "deb http://ppa.launchpad.net/keithw/glfw3/ubuntu trusty main" | sudo tee -a /etc/apt/sources.list
-  - echo "deb-src http://ppa.launchpad.net/keithw/glfw3/ubuntu trusty main" | sudo tee -a /etc/apt/sources.list
+  - sudo add-apt-repository ppa:keithw/glfw3
   - sudo apt update
   - sudo apt install libglfw3 libglfw3-dev
 
