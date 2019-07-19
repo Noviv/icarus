@@ -7,12 +7,12 @@ addons:
     packages:
       - gcc-6
       - g++-6
-      - libglfw3
-      - libglfw3-dev
 
 install:
- - echo "deb http://ppa.launchpad.net/keithw/glfw3/ubuntu trusty main" | sudo tee -a /etc/apt/sources.list
- - echo "deb-src http://ppa.launchpad.net/keithw/glfw3/ubuntu trusty main" | sudo tee -a /etc/apt/sources.list
+  - echo "deb http://ppa.launchpad.net/keithw/glfw3/ubuntu trusty main" | sudo tee -a /etc/apt/sources.list
+  - echo "deb-src http://ppa.launchpad.net/keithw/glfw3/ubuntu trusty main" | sudo tee -a /etc/apt/sources.list
+  - sudo apt update
+  - sudo apt install libglfw3 libglfw3-dev
 
 before_script:
   - sudo ln -s /usr/bin/gcc-6 /usr/local/bin/gcc
