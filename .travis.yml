@@ -9,7 +9,7 @@ addons:
       - g++-6
 
 install:	
-  - sudo apt install libgles2-mesa-dev libxt-dev libxaw7-dev libxrandr-dev
+  - sudo apt install libglfw3 libglfw3-dev
 
 before_script:
   - sudo ln -s /usr/bin/gcc-6 /usr/local/bin/gcc
