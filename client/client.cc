@@ -79,8 +79,7 @@ std::array<Coordinate, 4> greet() {
 }
 
 int main(int argc, char* argv[]) {
-/*
-  if (parse_opts(argc, argv) || init_network()) {
+/*  if (parse_opts(argc, argv) || init_network()) {
     return 1;
   }
 

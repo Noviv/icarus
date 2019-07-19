@@ -7,9 +7,8 @@ addons:
     packages:
       - gcc-6
       - g++-6
-
-install:	
-  - sudo apt install libglfw3 libglfw3-dev
+      - libglfw3
+      - libglfw3-dev
 
 before_script:
   - sudo ln -s /usr/bin/gcc-6 /usr/local/bin/gcc
