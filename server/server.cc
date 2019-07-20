@@ -25,7 +25,6 @@ std::mutex cache_mutex;
 const char *coordinates = "-1,-1,-1,1,1,1,1,-1";
 
 void udp_handler() {
-
   char buffer[MAXLINE];
   char str[] = "hello";
   char *ipstring;
@@ -51,7 +50,6 @@ void udp_handler() {
   }
 
   while (true) {
-
     int bytes_recv = recvfrom(sockfd, (char *)buffer, MAXLINE, MSG_WAITALL,
                               (struct sockaddr *)&cliaddr, (socklen_t *)&len);
     hello_check = memcmp(buffer, str, sizeof(str));
