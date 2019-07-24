@@ -9,6 +9,8 @@
 #include <cstring>
 #include <array>
 
+#include <GLFW/glfw3.h>
+
 constexpr int PORT = 8080;
 static std::string IP = "34.83.142.125";
 
@@ -77,12 +79,36 @@ std::array<Coordinate, 4> greet() {
 }
 
 int main(int argc, char* argv[]) {
-  if (parse_opts(argc, argv) || init_network()) {
+/*  if (parse_opts(argc, argv) || init_network()) {
     return 1;
   }
 
   auto coordinates = greet();
 
-  close(sockfd);
+  close(sockfd);*/
+
+  if (!glfwInit()) {
+    std::cerr << "glfwInit() failed" << std::endl;
+    return 1;
+  }
+
+  GLFWwindow* window = glfwCreateWindow(640, 480, "Hello", NULL, NULL);
+  if (!window) {
+    std::cerr << "window creation failed" << std::endl;
+    glfwTerminate();
+   return 1;
+  }
+
+  glfwMakeContextCurrent(window);
+  glfwSwapInterval(1);
+
+  while (!glfwWindowShouldClose(window)) {
+    glfwSwapBuffers(window);
+    glfwPollEvents();
+  }
+
+  glfwDestroyWindow(window);
+
+  glfwTerminate();
   return 0;
 }
