@@ -16,6 +16,8 @@
 #include <unistd.h>
 #include <unordered_set>
 
+#include "block.h"
+
 constexpr int UDP_PORT = 8080;
 constexpr int TCP_PORT = 8081;
 constexpr int MAXLINE = 1024;
