@@ -48,7 +48,7 @@ public:
 
 	void Rename() {
 		std::string new_name;
-		std::cout << "Enter new name: ";
+		std::cout << "Enter new name, bitch: ";
 		std::cin >> new_name;
 		Rename(new_name);
 	}
